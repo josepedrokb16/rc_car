@@ -1,0 +1,10 @@
+myenv
+/src/Adafruit_PCA9685*
+/src/build/
+/src/examples/
+/src/setup.py
+/src/ez_setup.py
+/src/LICENSE
+/src/README.md
+/src/dist/
+__pycache__
