@@ -20,8 +20,10 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()  # Accept the WebSocket connection
     while True:
         data = await websocket.receive_text()  # Receive data from the client
+        logger.info(data)
         try:
             event = json.loads(data)
             my_controller.move(event)
         except Exception as e:
-            logger.info(e)
+            logger.error(e)
+        await websocket.send_text('ok')

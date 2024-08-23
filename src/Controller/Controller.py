@@ -11,7 +11,6 @@ class Controller:
     def __init__(self):
         self.pwm = PCA9685()
         self.pwm.set_pwm_freq(60)
-        pass
 
     def map_value_to_range(self, variable, min_val, max_val):
         return int(min_val + ((variable + 1) / 2) * (max_val - min_val))
