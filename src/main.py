@@ -13,17 +13,16 @@ logger = logging.getLogger('uvicorn')
 
 app = FastAPI()
 
-my_controller = Controller()
+my_controller = Controller(logger)
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()  # Accept the WebSocket connection
+    await websocket.accept()
     while True:
-        data = await websocket.receive_text()  # Receive data from the client
+        data = await websocket.receive_text()
         logger.info(data)
         try:
             event = json.loads(data)
             my_controller.move(event)
         except Exception as e:
             logger.error(e)
-        await websocket.send_text('ok')

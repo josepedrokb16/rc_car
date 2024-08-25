@@ -8,3 +8,5 @@ myenv
 /src/README.md
 /src/dist/
 __pycache__
+client_venv
+rpi_venv
