@@ -2,20 +2,16 @@ import pygame
 import asyncio
 
 class XboxController:
-    def __init__(self, input_queue, my_logger):
+    def __init__(self, input_queue):
         pygame.init()
-        self.my_logger = my_logger
-        self.joysticks = []
-        self.clock = pygame.time.Clock()
         self.valid_axis = [0,4,5]
-        self._connect_joysticks()
+        self.remote_controller = None
         self.input_queue = input_queue
+        self._connect_remote_controller()
 
-    def _connect_joysticks(self):
-        for i in range(0, pygame.joystick.get_count()):
-            self.joysticks.append(pygame.joystick.Joystick(i))
-            self.joysticks[-1].init()
-            print ("Detected joystick "),self.joysticks[-1].get_name(),"'"
+    def _connect_remote_controller(self):
+        self.remote_controller = pygame.joystick.Joystick(0)
+        self.remote_controller.init()
 
     async def monitor_events(self):
         while True:
