@@ -5,16 +5,16 @@ from XboxController.xbox_controller import XboxController
 
 class Client:
     def __init__(self):
-        self.input_queue = asyncio.Queue(maxsize=1)
-        self.xbox_controller = XboxController(self.input_queue)
+        self.xbox_controller = XboxController()
 
     async def connect(self):
         uri = "ws://192.168.2.41:8000/ws"
         async with websockets.connect(uri, ping_interval=20, ping_timeout=20) as websocket:
-            asyncio.create_task(self.xbox_controller.monitor_events())
             while True:
-                state = await self.input_queue.get()
-                await websocket.send(json.dumps(state))
+                event = await self.xbox_controller.get_event()
+                if event:
+                    print(f"sent {event}")
+                    await websocket.send(json.dumps(event))
 
 if __name__ == "__main__":
     client = Client()
