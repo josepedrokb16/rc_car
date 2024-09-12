@@ -3,7 +3,7 @@ from adafruit_pca9685 import PCA9685
 
 
 class MotorController:
-    MAX_SPEED = 0.5
+    MAX_SPEED = 0.1
     MIN_SPEED = 0
     MAX_TURN = 0.14
     MIN_TURN = 0.04

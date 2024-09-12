@@ -9,7 +9,7 @@ class Client:
         self.xbox_controller = XboxController(self.input_queue)
 
     async def connect(self):
-        uri = "ws://172.20.10.5:8000/ws"
+        uri = "ws://your-url:8000/ws"
         async with websockets.connect(uri, ping_interval=20, ping_timeout=20) as websocket:
             asyncio.create_task(self.xbox_controller.monitor_events())
             while True:
