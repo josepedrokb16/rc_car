@@ -5,7 +5,8 @@ from gi.repository import Gst, GLib, GstRtspServer
 
 HOST = "0.0.0.0"
 PORT = 8559
-PIPELINE = 'v4l2src ! videorate ! video/x-raw,framerate=30/1 ! videoconvert ! queue ! x264enc tune=zerolatency bitrate=500 speed-preset=superfast key-int-max=15 ! queue ! rtph264pay name=pay0 pt=96 sync=false'
+
+PIPELINE = "v4l2src device=/dev/video0 ! video/x-h264,width=1280,height=720,framerate=30/1 ! h264parse ! rtph264pay name=pay0 pt=96 sync=false"
 
 print(f"hosting RTSP on {HOST}:{PORT}")
 print(f"pipeline: {PIPELINE}")
@@ -13,17 +14,19 @@ print(f"pipeline: {PIPELINE}")
 # Initialize GStreamer
 Gst.init(None)
 
-# Create the GStreamer pipeline description
-pipeline_description = (PIPELINE)
-
-# Create the RTSP server
+# Create the RTSP server and set the port
 server = GstRtspServer.RTSPServer()
 server.props.service = str(PORT)
+
+# Get the mount points to map URLs to media factories
 mounts = server.get_mount_points()
+
+# Create factory that will generate pipelines
 factory = GstRtspServer.RTSPMediaFactory()
-factory.set_launch(pipeline_description)
-factory.set_shared(True)
+factory.set_launch(PIPELINE)
+
 mounts.add_factory("/test", factory)
+# Start listening for connections
 server.attach(None)
 
 # Create a GLib Main Loop and run it
