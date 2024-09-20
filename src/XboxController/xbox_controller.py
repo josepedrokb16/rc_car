@@ -4,7 +4,7 @@ import asyncio
 class XboxController:
     def __init__(self, input_queue):
         pygame.init()
-        self.valid_axis = [0,4,5]
+        self.valid_axis = [0,2,3,4,5]
         self.remote_controller = pygame.joystick.Joystick(0)
         self.remote_controller.init()
         self.input_queue = input_queue
