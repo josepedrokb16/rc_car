@@ -1,0 +1,13 @@
+[Unit]
+Description=RTSP Server
+After=network.target
+
+[Service]
+ExecStart=/home/rpi/rc_car/src/Host/venv/bin/python3 /home/rpi/rc_car/src/Host/Cam/cam.py
+WorkingDirectory=/home/rpi/rc_car/src/Host
+Restart=always
+User=rpi
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

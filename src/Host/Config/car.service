@@ -1,0 +1,13 @@
+[Unit]
+Description=RC Car Service
+After=network.target
+
+[Service]
+ExecStart=bash /home/rpi/rc_car/src/Host/start.sh
+WorkingDirectory=/home/rpi/rc_car/src/Host
+Restart=always
+User=rpi
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
