@@ -18,6 +18,7 @@ class Channel(Enum):
     DRIVER_PWM_2 = 2
     PITCH = 4
     YAW = 5
+    TRIGGER = 12
 
 
 class ServoDriver:

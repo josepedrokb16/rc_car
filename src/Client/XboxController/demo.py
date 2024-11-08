@@ -6,5 +6,5 @@ remote_controller.init()
 
 while True:
     event = pygame.event.poll()
-    if event.type == pygame.JOYAXISMOTION and event.axis == 5:
+    if event.type == pygame.JOYBUTTONDOWN and event.button == 0:
         print(event)

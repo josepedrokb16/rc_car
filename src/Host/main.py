@@ -2,7 +2,8 @@ from fastapi import FastAPI, WebSocket
 import json
 from DrivingControl.Controller import DrivingController
 from Cam.gimbal import CamGimbal
-from PCA9685_Abstraction.servo_driver import Axis
+from EventManager.event_manager import EventManager
+from Nerf.trigger import Trigger
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -11,6 +12,8 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 motor_controller = DrivingController()
 cam_gimbal = CamGimbal()
+trigger = Trigger()
+event_manager = EventManager(cam_gimbal, motor_controller, trigger)
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -20,9 +23,6 @@ async def websocket_endpoint(websocket: WebSocket):
         try:
             logger.info(f"received {data}")
             event = json.loads(data)
-            if event['axis'] in [Axis.RIGHT_JOYSTICK_HORIZONTAL.value, Axis.RIGHT_JOYSTICK_VERTICAL.value]:
-                cam_gimbal.move(event)
-            else:
-                motor_controller.move(event)
+            await event_manager.process_event(event)
         except Exception as e:
             logger.error(e)

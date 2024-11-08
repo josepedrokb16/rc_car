@@ -6,7 +6,8 @@ from gi.repository import Gst, GLib, GstRtspServer
 HOST = "0.0.0.0"
 PORT = 8559
 
-PIPELINE = "v4l2src device=/dev/video0 ! video/x-h264,width=1280,height=720,framerate=30/1 ! h264parse ! rtph264pay name=pay0 pt=96 sync=false"
+PIPELINE = ("v4l2src device=/dev/video0 ! video/x-h264,width=1280,height=720,framerate=30/1 ! h264parse ! rtph264pay name=pay0 pt=96 sync=false "
+            "alsasrc device=hw:1,0 ! audioconvert ! audioresample ! voaacenc ! rtpmp4apay name=pay1 pt=97")
 
 print(f"hosting RTSP on {HOST}:{PORT}")
 print(f"pipeline: {PIPELINE}")
